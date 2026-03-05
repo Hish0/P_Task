@@ -13,8 +13,15 @@ function isValidUrl(url) {
 function checkUrl(url) {
   return new Promise((resolve) => {
     setTimeout(() => {
-      const type = url.endsWith("/") ? "folder" : "file";
-      resolve({ exists: true, type });
+      // simulate random response, we might find it and we might not
+      const exists = Math.random() > 0.5;
+
+      if (!exists) {
+        resolve({ exists: false });
+      } else {
+        const type = url.endsWith("/") ? "folder" : "file";
+        resolve({ exists: true, type });
+      }
     }, 500);
   });
 }
@@ -36,6 +43,10 @@ input.addEventListener("input", () => {
   timer = setTimeout(async () => {
     const result = await checkUrl(url);
 
-    statusEl.textContent = "Exists (" + result.type + ")";
+    if (!result.exists) {
+      statusEl.textContent = "Not found";
+    } else {
+      statusEl.textContent = "Exists (" + result.type + ")";
+    }
   }, 2000);
 });
