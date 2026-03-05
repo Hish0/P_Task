@@ -1,6 +1,8 @@
 const input = document.getElementById("urlInput");
 const statusEl = document.getElementById("status");
 
+let timer;
+
 // simple URL regex validation, this is for the validation of the url before we push it to the server
 function isValidUrl(url) {
   const regex = /^(https?:\/\/)[^\s/$.?#].[^\s]*$/i;
@@ -20,4 +22,20 @@ function checkUrl(url) {
 // this is the event listener for the input field , we will simulate the server call here and keep in mind the too many requests,we will be updating the status here
 input.addEventListener("input", () => {
   const url = input.value;
+
+  clearTimeout(timer);
+
+  if (!isValidUrl(url)) {
+    statusEl.textContent = "Invalid URL";
+    return;
+  }
+
+  statusEl.textContent = "Checking...";
+
+  // (throttle requests while typing)
+  timer = setTimeout(async () => {
+    const result = await checkUrl(url);
+
+    statusEl.textContent = "Exists (" + result.type + ")";
+  }, 2000);
 });
