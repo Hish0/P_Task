@@ -2,7 +2,10 @@ const input = document.getElementById("urlInput");
 const statusEl = document.getElementById("status");
 
 // simple URL regex validation, this is for the validation of the url before we push it to the server
-function isValidUrl(url) {}
+function isValidUrl(url) {
+  const regex = /^(https?:\/\/)[^\s/$.?#].[^\s]*$/i;
+  return regex.test(url);
+}
 
 // mock async server, this is the server that will validate the url we will assume the file or folder exists
 function checkUrl(url) {}
